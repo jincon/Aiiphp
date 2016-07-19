@@ -1,0 +1,1 @@
+<?php if(!defined('IN_Aii'))exit(); return array(1468771097, '我是帅哥');
