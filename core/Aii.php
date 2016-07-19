@@ -223,68 +223,13 @@ class Aii {
         //set_exception_handler(array("excep", "handleException"));
 
         // 系统信息
-//        if(version_compare(PHP_VERSION,'5.4.0','<')) {
-//            ini_set('magic_quotes_runtime',0);
-//            define('MAGIC_QUOTES_GPC',get_magic_quotes_gpc()? true : false);
-//        }else{
-//            define('MAGIC_QUOTES_GPC',false);
-//        }
-
-    }
-
-    /**
-     * 对字符串进行htmlspecailchars()转码
-     *
-     * @access protected
-     * @param mixted $params 待转码的字符串
-     * @param boolean $isEncode 是否对符串进行htmlspecialchars()转码（true：是/ false：否）
-     * @return string
-     */
-    protected static function _encode($params = null, $isEncode = true) {
-        //参数分析
-        if (is_null($params)) {
-            return $params;
+        if(version_compare(PHP_VERSION,'5.4.0','<')) {
+            define('MAGIC_QUOTES_GPC',get_magic_quotes_gpc()? true : false);
+        }else{
+            define('MAGIC_QUOTES_GPC',false);
         }
-        if ($isEncode === false) {
-            return (!is_array($params)) ? trim($params) : array_map('trim', $params);
-        }
-        //当参数不为数组时
-        if (!is_array($params)) {
-            return trim(htmlspecialchars($params, ENT_QUOTES, 'UTF-8'));
-        }
-        return array_map(array('Aii', '_encode'), $params);
-    }
 
-    /**
-     * 安全过滤类-通用数据过滤
-     *  Controller中使用方法：self::filter_escape($value)
-     * @param string $value 需要过滤的变量
-     * @return string|array
-     */
-    public static function filter_escape($value) {
-        if (is_array($value)) {
-            foreach ($value as $k => $v) {
-                $value[$k] = self::filter_str($v);
-            }
-        } else {
-            $value = self::filter_str($value);
-        }
-        return $value;
-    }
 
-    /**
-     * 安全过滤类-字符串过滤 过滤特殊有危害字符
-     *  Controller中使用方法：self::filter_str($value)
-     * @param  string $value 需要过滤的值
-     * @return string
-     */
-    public static function filter_str($value) {
-        $value = str_replace(array("\0","%00","\r"), '', $value);
-        $value = preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/','/&(?!(#[0-9]+|[a-z]+);)/is'), array('', '&amp;'), $value);
-        $value = str_replace(array("%3C",'<'), '&lt;', $value);
-        $value = str_replace(array("%3E",'>'), '&gt;', $value);
-        $value = str_replace(array('"',"'","\t",'  '), array('&quot;','&#39;','    ','&nbsp;&nbsp;'), $value);
-        return $value;
     }
 
 
@@ -348,11 +293,13 @@ class Aii {
             }
         }
 
-        $_POST = & self::filter_escape($_POST);
-        $_GET = & self::filter_escape($_GET);
-        $_REQUEST = & self::filter_escape($_REQUEST);
         $_SERVER = & self::filter_escape($_SERVER);
-        $_COOKIE = & self::filter_escape($_COOKIE);
+        if(!MAGIC_QUOTES_GPC && self::$_config['FILTER_ON']){
+            $_POST = & self::addslashes_deep($_POST);
+            $_GET = & self::addslashes_deep($_GET);
+            $_REQUEST = & self::addslashes_deep($_REQUEST);
+            $_COOKIE = & self::addslashes_deep($_COOKIE);
+        }
     }
 
 
@@ -362,9 +309,10 @@ class Aii {
      * @author：
      */
     public static function run(){
-
+        //初始化
         self::init();
 
+        //解析URL参数。
         self::uri();
 
         $controlfile = APP.'/'.self::$module.'/controller/'.self::$control.'Controller.class.php';
@@ -414,6 +362,80 @@ class Aii {
      */
     public static function getAction(){
         return self::$action;
+    }
+
+
+    /**
+     * 安全过滤类-过滤javascript,css,iframes,object等不安全参数 过滤级别高
+     * 使用方法：Aii::filter_script($value)
+     * @param  string $value 需要过滤的值
+     * @return string
+     */
+    public static function filter_script($value) {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = self::filter_script($v);
+            }
+            return $value;
+        } else {
+            $parten = array(
+                "/(javascript:)?on(click|load|key|mouse|error|abort|move|unload|change|dblclick|move|reset|resize|submit)/i",
+                "/<script(.*?)>(.*?)<\/script>/si",
+                "/<iframe(.*?)>(.*?)<\/iframe>/si",
+                "/<object.+<\/object>/isU"
+            );
+            $replace = array("\\2", "", "", "");
+            $value = preg_replace($parten, $replace, $value, -1, $count);
+            if ($count > 0) {
+                $value = self::filter_script($value);
+            }
+            return $value;
+        }
+    }
+
+
+    /**
+     * 安全过滤类-通用数据过滤
+     *  Controller中使用方法：self::filter_escape($value)
+     * @param string $value 需要过滤的变量
+     * @return string|array
+     */
+    public static function filter_escape($value) {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = self::filter_str($v);
+            }
+        } else {
+            $value = self::filter_str($value);
+        }
+        return $value;
+    }
+
+
+    /**
+     * 安全过滤类-字符串过滤 过滤特殊有危害字符
+     *  Controller中使用方法：self::filter_str($value)
+     * @param  string $value 需要过滤的值
+     * @return string
+     */
+    public static function filter_str($value) {
+        $value = str_replace(array("\0","%00","\r"), '', $value);
+        $value = preg_replace(array('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/','/&(?!(#[0-9]+|[a-z]+);)/is'), array('', '&amp;'), $value);
+        $value = str_replace(array("%3C",'<'), '&lt;', $value);
+        $value = str_replace(array("%3E",'>'), '&gt;', $value);
+        $value = str_replace(array('"',"'","\t",'  '), array('&quot;','&#39;','    ','&nbsp;&nbsp;'), $value);
+        return $value;
+    }
+
+
+    /**
+     * 安全过滤 addslashes。
+     *
+     * @param $value
+     * @return array|null|string
+     */
+    public static function addslashes_deep($value){
+        return is_array($value) ? array_map('addslashes_deep', $value) : (isset($value) ? addslashes($value) : null);
     }
 
 
@@ -497,9 +519,6 @@ class Aii {
                 unset($_t);
             } else {
                 $_importFiles[$filename] = false;
-//                if(class_exists('newexception')){
-//                    throw new newexception('不存在的文件路径：'.$filename);
-//                }
             }
         }
         return $_importFiles[$filename];

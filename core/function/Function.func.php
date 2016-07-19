@@ -56,9 +56,10 @@ function d($data){
  *
  * @param $name
  * @param：$default  默认值
+ * @param：$filter 参数过滤方法，如果不想过滤，可以。
  * @return mixed
  */
-function I($name,$default=''){
+function I($name,$default='',$filter=null){
 
     if(strpos($name,'.')) { // 指定参数来源
         list($method,$name) =   explode('.',$name,2);
@@ -145,7 +146,6 @@ function I($name,$default=''){
         $data       =    isset($default)?$default:null;
     }
     return $data;
-    //return $_REQUEST[$name];
 }
 function array_map_recursive($filter, $data) {
     $result = array();
@@ -316,7 +316,7 @@ function getExt($file) {
 /**
  * 判断是否是移动设备
  */
-function isMobile() {
+function is_mobile() {
     if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
         return true;
     }
@@ -405,7 +405,7 @@ function get_client_ip($type = 0,$adv=false) {
  * @param integer $code 状态码
  * @return void
  */
-function sendStatus($code) {
+function send_status($code) {
     static $_status = array(
         // Informational 1xx
         100 => 'Continue',
@@ -467,7 +467,7 @@ function sendStatus($code) {
  * 判断是否SSL协议
  * @return boolean
  */
-function isSsl() {
+function is_ssl() {
     if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
         return true;
     }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
