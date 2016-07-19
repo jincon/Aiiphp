@@ -9,7 +9,7 @@ Aiiphp框架，借鉴了几个国内外优秀，并拿来主义了别人类库�
 
 #系统目录结构：
 
-Aiiphp框架目录。结构
+`Aiiphp框架目录。结构
 |____app                App目录
 | |____admin            后台目录
 | | |____controller     后台控制器
@@ -46,6 +46,6 @@ Aiiphp框架目录。结构
 | |____font             字体目录
 | |____image            图片目录
 | |____js               JS目录。
-
+`
 
 Web ：http://www.jincon.com/
