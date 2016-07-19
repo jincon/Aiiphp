@@ -30,11 +30,11 @@ if (!defined('IN_Aii')) {
  * 实例化
  *
  * 法一:
- * $memcache = new Memcache_Cache($memOptions);
+ * $memcache = new MemcacheCache($memOptions);
  *
  */
 
-class Memcache_Cache {
+class MemcacheCache {
 
     /**
      * 单例模式实例化本类

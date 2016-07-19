@@ -562,19 +562,24 @@ class Aii {
 
     /**
      * Aii::App() 仅仅支持lib/  项目APP/common目录下的类库
+     * 让他支持目录形式。注意，类名称不能出现相同的。
      * @param $name
      * @param string $initArr
      * @return mixed
      */
     public static function app($name,$initArr = ''){
-
-        if(self::$_app[$name])
-            return self::$_app[$name];
+        $t = explode('/',$name);
+        $path = $name;
+        if(count($t)>1){
+            $name = array_pop($t);
+        }
+        unset($t);
+        if(self::$_app[$name]) return self::$_app[$name];
 
         //优先核心lib目录
-        $r = self::require_cache(CORE_ROOT.'lib/'.$name.'.class.php');
+        $r = self::require_cache(CORE_ROOT.'lib/'.$path.'.class.php');
         if(!$r)
-            $r = self::require_cache(APP.'common/class/'.$name.'.class.php');
+            $r = self::require_cache(APP.'common/class/'.$path.'.class.php');
 
         if($r){
             return self::$_app[$name] =  new $name($initArr);

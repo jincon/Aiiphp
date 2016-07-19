@@ -31,7 +31,6 @@ class IndexController extends Controller{
 
     function test(){
 
-
 //        echo Aii::app('FileCache')->set('key','我是帅哥');
 //        echo Aii::app('FileCache')->set('key2','我是帅哥222');
 //        echo Aii::app('FileCache')->get('key2');
@@ -48,9 +47,10 @@ class IndexController extends Controller{
 
           echo "test";
 
+//        echo Aii::app('Demo/demo')->p();
 
 //        $page = @(int)$_GET['page'];
-//        $pager = $this->lib('Page');
+//        $pager = Aii::app('Page');
 //        echo $pager->loadCss('classic');
 //        $pager_html = $pager->total(100)->num(10)->page($page)->url('/?page=')->output();
 //        echo $pager_html;

@@ -50,6 +50,7 @@ class Controller{
 
 
     /**
+     * 废弃，统一通过 Aii::app['xxx/xxx']模式加载。
      * 加载 core/lib 下的核心库文件，支持实例化的时候，传递初始化参数。
      * 原则上不推荐使用，建议使用 Aii::app('xxxx')
      * @param $name
@@ -57,11 +58,11 @@ class Controller{
      * @return mixed
      * @throws newexception
      */
-    function lib($name,$initArr = ''){
-        self::require_cache(CORE_ROOT.'lib/'.$name.'.class.php');
-        //return new $name($initArr);
-        return Aii::singleton($name,$initArr);
-    }
+//    function lib($name,$initArr = ''){
+//        self::require_cache(CORE_ROOT.'lib/'.$name.'.class.php');
+//        //return new $name($initArr);
+//        return Aii::singleton($name,$initArr);
+//    }
 
 
     /**

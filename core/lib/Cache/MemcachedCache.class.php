@@ -33,7 +33,7 @@ if (!defined('IN_Aii')) {
  *
  */
 
-class Memcached_Cache {
+class MemcachedCache {
 
     /**
      * 单例模式实例化本类
