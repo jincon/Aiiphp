@@ -63,7 +63,7 @@
  *
  */
 
-define('VERSION','0.9.9');
+define('VERSION','0.9.0');
 
 // 记录开始运行时间
 $GLOBALS['_beginTime'] = microtime(TRUE);
@@ -293,12 +293,19 @@ class Aii {
             }
         }
 
-        $_SERVER = & self::filter_escape($_SERVER);
+        /*
+         * 注意：
+         * 魔术函数的问题，争论已久。官方其实都觉得没有必要，包括php5.4已经取消了。
+         * 处理sql注入攻击的问题，可以使用系统类库自带的pdo预编译功能，如果你非不这么干，那也没办法了。
+         * web安全，是需要在编码的时候，主动有意识的避免此问题，特别是SQL这样的低级错误。
+         * 为了适应新手，所以，默认开始过滤，你想关闭，可以通过系统配置文件的 FILTER_ON ，设置为 false。
+         * */
         if(!MAGIC_QUOTES_GPC && self::$_config['FILTER_ON']){
             $_POST = & self::addslashes_deep($_POST);
             $_GET = & self::addslashes_deep($_GET);
             $_REQUEST = & self::addslashes_deep($_REQUEST);
             $_COOKIE = & self::addslashes_deep($_COOKIE);
+            $_SERVER = & self::filter_escape($_SERVER);
         }
     }
 
