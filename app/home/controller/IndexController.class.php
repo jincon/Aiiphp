@@ -6,7 +6,7 @@
  * Time: 下午11:48
  */
 //
-class IndexController extends Controller{
+class IndexController extends JomController{
 
 
 //    function __construct(){
@@ -30,6 +30,14 @@ class IndexController extends Controller{
     }
 
     function test(){
+//          $m = $this->model('Post');
+//          echo $m->p();
+
+//        $url = "url地址";
+//        $data = Aii::app('Curl')->get($url);
+//        print_r($data);
+
+
 
 //        echo Aii::app('FileCache')->set('key','我是帅哥');
 //        echo Aii::app('FileCache')->set('key2','我是帅哥222');

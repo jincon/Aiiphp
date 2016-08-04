@@ -183,6 +183,7 @@ class Aii {
         foreach ($path as $value) {
             self::require_cache($value);
         }
+
         //end
 
         //配置初始化。
@@ -301,11 +302,11 @@ class Aii {
          * 为了适应新手，所以，默认开始过滤，你想关闭，可以通过系统配置文件的 FILTER_ON ，设置为 false。
          * */
         if(!MAGIC_QUOTES_GPC && self::$_config['FILTER_ON']){
-            $_POST = & self::addslashes_deep($_POST);
-            $_GET = & self::addslashes_deep($_GET);
-            $_REQUEST = & self::addslashes_deep($_REQUEST);
-            $_COOKIE = & self::addslashes_deep($_COOKIE);
-            $_SERVER = & self::filter_escape($_SERVER);
+            $_POST = self::addslashes_deep($_POST);
+            $_GET = self::addslashes_deep($_GET);
+            $_REQUEST = self::addslashes_deep($_REQUEST);
+            $_COOKIE = self::addslashes_deep($_COOKIE);
+            $_SERVER = self::filter_escape($_SERVER);
         }
     }
 
@@ -322,10 +323,13 @@ class Aii {
         //解析URL参数。
         self::uri();
 
-        $controlfile = APP.'/'.self::$module.'/controller/'.self::$control.'Controller.class.php';
-        if(file_exists($controlfile)){
-            self::require_cache($controlfile);
-        }
+
+
+//        $controlfile = APP.'/'.self::$module.'/controller/'.self::$control.'Controller.class.php';
+//        if(file_exists($controlfile)){
+//            self::require_cache($controlfile);
+//        }
+
 
         if(!class_exists(self::$control.'Controller')){
             throw new Newexception('不存在的控制器：'.self::$control.'Controller');
@@ -497,7 +501,7 @@ class Aii {
      * @param：
      * @param string $type
      */
-    public static function autoload(){
+    public static function autoload($className){
 
         $path = glob(CORE_ROOT.'class/*.class.php');
         foreach ($path as $value) {
@@ -507,6 +511,15 @@ class Aii {
         $path = glob(APP.'common/function/*.func.php');
         foreach ($path as $value) {
             self::require_cache($value);
+        }
+
+        //加载控制器
+        if (substr($className, -10) == 'Controller'){
+            self::require_cache(APP.self::$module.'/controller/'.$className.'.class.php');
+
+        //加载模型
+        }elseif (substr($className, -5) == 'Model') {
+            self::require_cache(APP.self::$module.'/model/'.$className.'.class.php');
         }
 
     }

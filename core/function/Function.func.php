@@ -164,7 +164,7 @@ function array_map_recursive($filter, $data) {
  * @param $url
  * @param $param
  */
-function U($url, $param){
+function U($url, $param=array()){
     if(!$url) return '';
     $url_model = Config::get('URL_MODEL');
     if(in_array($url_model,array(1,2))){
@@ -317,15 +317,13 @@ function getExt($file) {
  * 判断是否是移动设备
  */
 function is_mobile() {
-    if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
-        return true;
-    }
     if (isset ($_SERVER['HTTP_VIA'])){
         return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
     }
     if (isset ($_SERVER['HTTP_USER_AGENT']))
     {
         $clientkeywords = array (
+            'iphone','android',
             'sony',     'ericsson',       'mot',   'samsung',     'htc',       'sgh',     'lg',       'sharp',
             'sie-',      'philips', 'panasonic',   'alcatel',  'lenovo',    'iphone',   'ipod',  'blackberry',
             'meizu',     'android',  'netfront',   'symbian',   'ucweb', 'windowsce',   'palm',   'operamini',
@@ -339,6 +337,14 @@ function is_mobile() {
     }
     return false;
 }
+
+/**
+ * 判断客户端是否是微信
+ */
+function is_weixin(){
+    return strpos(strtolower($_SERVER['HTTP_USER_AGENT']),"micromessenger") !== false ? true : false;
+}
+
 
 /**
  * 删除目录和文件。

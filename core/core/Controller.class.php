@@ -21,7 +21,7 @@ class Controller{
      * @var string
      * 控制器方法名称
      */
-    public $control = 'home';
+    public $control = 'index';
 
     /**
      * @var string
@@ -187,10 +187,8 @@ class Controller{
         if(!$model){
             return new Model();
         }else{
-            if(self::require_cache(APP.$this->module.DS.'model'.DS.$model.'.class.php')){
-                $_m = $model."Model";
-                return new $_m();
-            }
+            $_m = $model."Model";
+            return new $_m();
         }
     }
 
