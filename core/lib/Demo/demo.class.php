@@ -11,7 +11,7 @@
 class demo{
     public $init;
 
-    function __construct($init){
+    function __construct($init=''){
         $this->init = $init;
     }
 

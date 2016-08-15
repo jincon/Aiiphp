@@ -6,9 +6,6 @@
  * Time: 上午12:02
  */
 
-function test(){
+function test123(){
     echo 'test';
 }
-
-
-

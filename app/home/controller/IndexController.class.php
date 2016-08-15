@@ -17,6 +17,9 @@ class IndexController extends JomController{
         //echo $this->module;
         echo "<h1>Hello Aiiphp v".VERSION."</h1>";
 
+        // #######$this->import('function.ext'); //注意common下的函数会直接加载，不需要load和import。
+        //test123();
+
 //        $m = $this->model('Post');
 //        var_dump($m->getConnect('bbs')->getOne('select * from tp_admin limit 1'));
 //        echo $m->add(array('tid'=>'123','type'=>'5','title'=>'111','url'=>'222'));
@@ -37,8 +40,6 @@ class IndexController extends JomController{
 //        $data = Aii::app('Curl')->get($url);
 //        print_r($data);
 
-
-
 //        echo Aii::app('FileCache')->set('key','我是帅哥');
 //        echo Aii::app('FileCache')->set('key2','我是帅哥222');
 //        echo Aii::app('FileCache')->get('key2');
@@ -56,28 +57,33 @@ class IndexController extends JomController{
           echo "test";
 
 //        echo Aii::app('Demo/demo')->p();
+        // ###  等价于上面
+//            Aii::library('Demo/demo');
+//            (new demo())->p();
+
 
 //        $page = @(int)$_GET['page'];
 //        $pager = Aii::app('Page');
 //        echo $pager->loadCss('classic');
 //        $pager_html = $pager->total(100)->num(10)->page($page)->url('/?page=')->output();
 //        echo $pager_html;
-//        echo $this->lib('Captcha')->show();  //验证码
+//        echo Aii::app('Captcha')->show();  //验证码
 //
-//        $p = $this->lib('demo','123');
+//        $p = Aii::app('demo','123');
 //        echo $p->p();
+
 //
+//        echo Aii::app('Pinyin')->output('包子');
+//        echo Aii::app('page');
 //
-//
-//        echo $this->lib('Pinyin')->output('包金昆');
-//
-//        echo $this->lib('page');
-//
-//        $this->import('function.demo');
-//        $d =  $this->import('class.demo');
+
+//        $this->import('demo');  //只加载不是实例化类
+//        $d = new demo();
 //        $d->t();
-//
-//        echo new code();
+//上面等价于
+//        $d = $this->load('demo');   //加载并实例化类
+//        $d->t();
+
 //
 //        echo U('ab/cd',array('a'=>1,'b'=>2));
 //

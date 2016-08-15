@@ -63,7 +63,7 @@
  *
  */
 
-define('VERSION','0.9.0');
+define('VERSION','0.9.1');
 
 // 记录开始运行时间
 $GLOBALS['_beginTime'] = microtime(TRUE);
@@ -143,6 +143,12 @@ class Aii {
      */
     private static $_app;
 
+    /**
+     * 类库文件注册表
+     *
+     * @var array
+     */
+    private static $_lib;
 
 
     function __construct(){
@@ -605,7 +611,28 @@ class Aii {
             return self::$_app[$name] =  new $name($initArr);
         }else{
             throw new Newexception('类库'.$name.'无法找到');
-            //return false;
         }
     }
+
+    /**
+     * Aii::library() 仅仅支持lib/ 支持目录加载
+     * 类库，注意这个只加载，不是实例化
+     * 让他支持目录形式。注意，类名称不能出现相同的。
+     * @param $name
+     * @param string $initArr
+     * @return mixed
+     */
+    public static function library($name){
+        $t = explode('/',$name);
+        $path = $name;
+        if(count($t)>1){
+            $name = array_pop($t);
+        }
+        unset($t);
+        if(self::$_lib[$name]) return self::$_lib[$name];
+
+        //加载核心lib目录
+        self::require_cache(CORE_ROOT.'lib/'.$path.'.class.php');
+    }
+
 }

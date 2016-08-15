@@ -66,31 +66,30 @@ class Controller{
 
 
     /**
-     * 导入 common目录 function，class 下的等文件
-     *
+     * 导入common目录 class 下的等文件，类是不进行实例化的。
+     * function，已经系统自动加载了
      * @param $path
      * @param string $initArr
      * @return mixed
      * @throws newexception
      */
-    function import($path,$initArr = ''){
-        $path = explode('.',$path);
-        $ext = '';
-        switch($path['0']){
-            case 'class':
-                $ext = '.class';
-                break;
-            case 'function':
-                $ext = '.func';
-                break;
-            default:
-                break;
-        }
-        self::require_cache(APP.'common/'.$path['0'].'/'.$path['1'].$ext.'.php');
-        //return new $path['1']($initArr);
-        return Aii::singleton($path['1'],$initArr);
+    function import($path){
+        self::require_cache(APP.'common/class/'.$path.'.class.php');
     }
 
+
+    /**
+     * 加载 common目录 class 下的等文件，类会实例化。
+     * common目录下function改为自动加载了
+     * @param $path
+     * @param string $initArr
+     * @return mixed
+     * @throws newexception
+     */
+    function load($path,$initArr = ''){
+        $this->import($path);
+        return Aii::singleton($path,$initArr);
+    }
 
     /**
      * 视图变量赋值操作
