@@ -344,7 +344,15 @@ class Aii {
         $obj = new $class();
 
         if(!method_exists(self::$control.'Controller',self::$action)){
-            throw new Newexception('不存在的方法：'.self::$action);
+            /*
+             * 添加空操作，不存在的时候，调用此方法，
+             *  可以避免一部分的报错，或者访问错误提示等。
+             */
+            if(!method_exists(self::$control.'Controller',"_empty")){
+                throw new Newexception('不存在的方法：'.self::$action);
+            }else{
+                $obj->_empty();exit;
+            }
         }
 
         $a = self::$action;

@@ -59,7 +59,7 @@ Authon：jincon
 
 Web ：http://www.jincon.com/
 
-手册：有空写吧，最近有点其他事情
+手册：https://jincon.gitbooks.io/aiiphp/content/
 
 #测试数据：
 

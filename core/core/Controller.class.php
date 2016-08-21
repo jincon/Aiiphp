@@ -192,4 +192,73 @@ class Controller{
     }
 
 
+    /**
+     * Ajax方式返回数据到客户端
+     * @access protected
+     * @param mixed $data 要返回的数据
+     * @param String $type AJAX返回数据格式
+     * @param int $json_option 传递给json_encode的option参数
+     * @return void
+     */
+    protected function ajaxReturn($data,$type='',$json_option=0) {
+        if(empty($type)) $type  =   C('DEFAULT_AJAX_RETURN');
+        switch (strtoupper($type)){
+            case 'JSON' :
+                // 返回JSON数据格式到客户端 包含状态信息
+                header('Content-Type:application/json; charset=utf-8');
+                exit(json_encode($data,$json_option));
+            case 'XML'  :
+                // 返回xml格式数据
+                header('Content-Type:text/xml; charset=utf-8');
+                exit(xml_encode($data));
+            case 'JSONP':
+                // 返回JSON数据格式到客户端 包含状态信息
+                header('Content-Type:application/json; charset=utf-8');
+                $handler  =   isset($_GET[C('VAR_JSONP_HANDLER')]) ? $_GET[C('VAR_JSONP_HANDLER')] : C('DEFAULT_JSONP_HANDLER');
+                exit($handler.'('.json_encode($data,$json_option).');');
+            case 'EVAL' :
+                // 返回可执行的js脚本
+                header('Content-Type:text/html; charset=utf-8');
+                exit($data);
+            default     :
+                // 用于扩展其他返回格式数据
+                exit('-0');
+        }
+    }
+
+    /**
+     * 成功提示页面
+     *
+     * @param string $message   错误信息
+     * @param string $jumpUrl   跳转地址
+     * @param int $waitSecond   延时跳转的时间
+     */
+    protected function success($message='',$jumpUrl='',$waitSecond=3){
+        include(CORE_ROOT.'view/message.php');exit;
+    }
+
+    /**
+     * 失败提示页面
+     *
+     * @param string $error    错误信息
+     * @param string $jumpUrl  调整地址
+     * @param int $waitSecond  延时跳转的时间
+     */
+    protected function error($error='',$jumpUrl='',$waitSecond=3){
+        include(CORE_ROOT.'view/message.php');exit;
+    }
+
+    /**
+     * Action跳转(URL重定向） 支持指定模块和延时跳转
+     * @param string $url 跳转的URL表达式
+     * @param array $params 其它URL参数
+     * @param integer $delay 延时跳转的时间 单位为秒
+     * @param string $msg 跳转提示信息
+     * @return void
+     */
+    protected function redirect($url,$params=array(),$delay=0,$msg='') {
+        $url    =   U($url,$params);
+        redirect($url,$delay,$msg);
+    }
+
 }
