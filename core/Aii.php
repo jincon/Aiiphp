@@ -214,6 +214,8 @@ class Aii {
         define('__IMAGE__',     __STATIC__.'image/');
         define('__JS__',        __STATIC__.'js/');
         define('__HISTORY__', isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '' );
+        define('__ROOT__', trim( 'http://' . $_SERVER['HTTP_HOST'] . dirname( $_SERVER['SCRIPT_NAME'] ), '/\\' ) );
+        define('__URL__', trim( 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim( $_SERVER['REQUEST_URI'], '/\\' ), '/' ) );
         //end
 
         // ============ init ============
@@ -338,7 +340,11 @@ class Aii {
 
 
         if(!class_exists(self::$control.'Controller')){
-            throw new Newexception('不存在的控制器：'.self::$control.'Controller');
+            if(!class_exists('EmptyController')) {
+                throw new Newexception('不存在的控制器：' . self::$control . 'Controller');
+            }else{
+                self::$control = 'empty';
+            }
         }
         $class = self::$control.'Controller';
         $obj = new $class();

@@ -63,7 +63,12 @@ class IndexController extends JomController{
 
 //          Log::write("啥东西");
 
+          d(I('keyword'));
+
           echo "test";
+
+//          var_dump(Session::set("name","baozi"));
+//          var_dump(Session::get("name"));
 
 //        echo Aii::app('Demo/demo')->p();
         // ###  等价于上面

@@ -134,12 +134,14 @@ class Controller{
         }
         if($path){
             $_path = explode('@',$path);
-            if(count($path)>1){
+            if(count($_path)>1){
                 $module = $_path[0];
                 $path = $_path[1];
+            }else{
+                $module = $this->module;
             }
             $_path = explode('/',$path);
-            if(count($path)>1){
+            if(count($_path)>1){
                 $control = $_path[0];
                 $action = $_path[1];
             }else{
