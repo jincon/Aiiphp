@@ -6,6 +6,12 @@
 
 return array(
 
+    //默认错误跳转对应的模板文件
+    'TMPL_ACTION_ERROR' => 'public:error',
+
+    //默认成功跳转对应的模板文件
+    'TMPL_ACTION_SUCCESS' => 'public:success',
+
     'URL_MODEL'             =>  1,
 
     'DB_MASTER_SLAVE'=> array(

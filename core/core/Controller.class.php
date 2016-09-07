@@ -236,7 +236,18 @@ class Controller{
      * @param int $waitSecond   延时跳转的时间
      */
     protected function success($message='',$jumpUrl='',$waitSecond=3){
-        include(CORE_ROOT.'view/message.php');exit;
+        //如果启用了模板
+        $jumpUrl = isset($jumpUrl) && !empty($jumpUrl) ? $jumpUrl : (__HISTORY__?__HISTORY__:__ROOT__);
+        $tplfile = CORE_ROOT.'view/message.php';
+        if(C('TMPL_ACTION_SUCCESS')){
+            $tpl = str_replace(":","_",C('TMPL_ACTION_SUCCESS'));
+            $tpl = APP.$this->module.'/view/'.$tpl.C('TMPL_TEMPLATE_SUFFIX');
+            if(file_exists($tpl)){
+                $tplfile =  $tpl;
+            }
+        }
+        include($tplfile);
+        exit;
     }
 
     /**
@@ -247,7 +258,18 @@ class Controller{
      * @param int $waitSecond  延时跳转的时间
      */
     protected function error($error='',$jumpUrl='',$waitSecond=3){
-        include(CORE_ROOT.'view/message.php');exit;
+        //如果启用了模板
+        $jumpUrl = isset($jumpUrl) && !empty($jumpUrl) ? $jumpUrl : (__HISTORY__?__HISTORY__:__ROOT__);
+        $tplfile = CORE_ROOT.'view/message.php';
+        if(C('TMPL_ACTION_ERROR')){
+            $tpl = str_replace(":","_",C('TMPL_ACTION_ERROR'));
+            $tpl = APP.$this->module.'/view/'.$tpl.C('TMPL_TEMPLATE_SUFFIX');
+            if(file_exists($tpl)){
+                $tplfile =  $tpl;
+            }
+        }
+        include($tplfile);
+        exit;
     }
 
     /**

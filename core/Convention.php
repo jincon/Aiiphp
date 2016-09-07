@@ -169,6 +169,11 @@ return  array(
     /* 系统变量名称设置 */
     'VAR_AJAX_SUBMIT'       =>  'ajax',  // 默认的AJAX提交变量
 
+    //默认错误跳转对应的模板文件
+    'TMPL_ACTION_ERROR' => '',
+
+    //默认成功跳转对应的模板文件
+    'TMPL_ACTION_SUCCESS' => '',
 
 
 );
