@@ -10,7 +10,10 @@ header('Content-Type:text/html;charset=utf-8');
 
 define('ROOT',dirname(__FILE__).'/');
 define('APP',ROOT.'app/');
-define('DEBUG',true);
+
+error_reporting(0); //屏蔽所有报错。
+
+define('DEBUG',true);  //开启debug
 
 require 'core/Aii.php';
 

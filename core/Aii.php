@@ -63,7 +63,7 @@
  *
  */
 
-define('VERSION','0.9.1');
+define('VERSION','0.9.2');
 
 // 记录开始运行时间
 $GLOBALS['_beginTime'] = microtime(TRUE);
@@ -189,7 +189,6 @@ class Aii {
         foreach ($path as $value) {
             self::require_cache($value);
         }
-
         //end
 
         //配置初始化。
@@ -199,6 +198,7 @@ class Aii {
         define('HOST',    self::$_config['HOST']);
         define('BASE_URL',    self::$_config['BASE_URL']);
         define('NOW_TIME',      $_SERVER['REQUEST_TIME']);
+        define('Micro_Time',   microtime(true));
         define('REQUEST_METHOD',$_SERVER['REQUEST_METHOD']);
         define('IS_GET',        REQUEST_METHOD =='GET' ? true : false);
         define('IS_POST',       REQUEST_METHOD =='POST' ? true : false);
@@ -228,8 +228,9 @@ class Aii {
         date_default_timezone_set(self::$_config['DEFAULT_TIMEZONE']);
 
 
-        //set_error_handler(array("excep", "handleException"));
-        //set_exception_handler(array("excep", "handleException"));
+        register_shutdown_function(array("Newexception", "fatalError"));
+        set_error_handler(array("Newexception", "appError"));
+        set_exception_handler(array("Newexception", "appException"));
 
         // 系统信息
         if(version_compare(PHP_VERSION,'5.4.0','<')) {

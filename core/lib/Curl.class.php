@@ -110,7 +110,7 @@ class Curl {
      * $curl = new Curl();
      * $curl ->get($url);
      */
-    public static function get($url, $data = array(), $proxy = null, $expire = 30) {
+    public static function get($url, $data = array(), $proxy = null, $expire = 60) {
 
         //参数分析
         if (!$url) {
@@ -196,7 +196,7 @@ class Curl {
      *
      * @return string
      */
-    public static function post($url, $data = array(), $proxy = null, $expire = 30) {
+    public static function post($url, $data = array(), $proxy = null, $expire = 60) {
 
         //参数分析
         if (!$url) {
