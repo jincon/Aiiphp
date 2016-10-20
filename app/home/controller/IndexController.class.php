@@ -36,6 +36,16 @@ class IndexController extends JomController{
         d(I('get.'));
     }
 
+
+
+    function stu()
+    {
+        echo U('index/stu',array('id'=>123,'type'=>456));
+        exit;
+        d(I('get.'));
+        echo 'stu';
+    }
+
     function test(){
 
         //$this->success("哈哈","http://baidu.com",100);
@@ -63,7 +73,7 @@ class IndexController extends JomController{
 
 //          Log::write("啥东西");
 
-          d(I('keyword'));
+          //d(I('keyword'));
 
           echo "test";
 

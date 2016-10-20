@@ -153,8 +153,11 @@ class Controller{
             $control = $this->control;
             $action = $this->action;
         }
-        
-        include (APP.$module.'/view/'.$control.'_'.$action.C('TMPL_TEMPLATE_SUFFIX'));
+
+        //如果开启主题
+        $_theme = C(strtoupper($module)."_THEME") ? C(strtoupper($module)."_THEME").'/' :"";
+
+        include (APP.$module.'/view/'.$_theme.$control.'_'.$action.C('TMPL_TEMPLATE_SUFFIX'));
     }
 
 

@@ -273,7 +273,18 @@ class Aii {
         }
 
         if($uri){
+            //如果开启了伪静态的后缀。
+            $uri = self::$_config['URL_HTML_SUFFIX'] ? rtrim($uri,'.'.self::$_config['URL_HTML_SUFFIX']):$uri;
 
+            //解析可能的自定义路由
+            if(self::$_config['URL_ROUTER_ON'] && self::$_config['URL_ROUTE_RULES']){
+                foreach(self::$_config['URL_ROUTE_RULES'] as $_k=>$_v){
+                    $_k =  str_replace(array('(:num)','(:any)','/'),array('(\d+)','(\w+)','\/'),$_k);
+                    $uri = preg_replace('/'.$_k.'$/',$_v,$uri);
+                }
+            }
+
+            //拆解url
             $uriArr = explode('/',$uri);
             $moduleArr = explode(',',self::$modules);
 

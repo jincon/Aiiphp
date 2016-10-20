@@ -162,7 +162,8 @@ return  array(
     // 0 (普通模式); 1 (PATHINFO 模式); 2 (REWRITE  模式); 3 (兼容模式)  默认为PATHINFO 模式
 
     'URL_CASE_INSENSITIVE' =>true,   //true 不区分大小写url，false区分，默认true
-    'URL_HTML_SUFFIX'       =>  '',  //URL伪静态后缀设置
+
+    'URL_HTML_SUFFIX'       =>  '',  //URL伪静态后缀设置，注意，这个添加后，必须要使用U函数生成。
 
     'LOAD_EXT_CONFIG' => '',   //如 db,user  等，系统会按照顺序依次加载。请注意变量重复。配合文件格式：*.php
 
@@ -175,5 +176,19 @@ return  array(
     //默认成功跳转对应的模板文件
     'TMPL_ACTION_SUCCESS' => '',
 
+
+    //主题模板的规则的 模块名称大写+ _THEME配置，为空则不使用主题
+    'HOME_THEME' => '',  //前台主题模板
+    'ADMIN_THEME' => '',   //后台主题模板
+
+
+    // 开启路由，注意开启路由，可能略微损耗性能。
+    'URL_ROUTER_ON'   => true,
+    'URL_ROUTE_RULES'=>array(
+//        'hello'	=> 'index/test',
+//        'stu/(:num)'	=> 'index/stu/id/${1}',
+//        'stu/(\d+)'	=> 'index/stu/id/${1}', //普通正则正则模式，注意要进行（）哦
+//        'city/(:any)'	=> 'city/${1}',
+    ),
 
 );

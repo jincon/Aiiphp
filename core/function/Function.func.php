@@ -180,13 +180,56 @@ function U($url, $param=array()){
             $_m = $module.'/';
         }
         $_tmp = '';
-        foreach($param as $k=>$v){
-            $_tmp .= $k.'/'.$v.'/';
+        if($param){
+            foreach($param as $k=>$v){
+                $_tmp .= $k.'/'.$v.'/';
+            }
+        }else{
+            //如果没有参数，同时url不存在 / 分隔，自动补上默认动作名称
+            $url = count(explode('/',$url))>1 ? $url : $url."/".Aii::$action ;
         }
-        return $self.'/'.substr($_m.$url."/".$_tmp,0,-1);
+
+        $url = substr($url."/".$_tmp,0,-1);
+
+        //反向生成自定义路由
+        if(C('URL_ROUTER_ON') && C('URL_ROUTE_RULES')){
+            foreach(C('URL_ROUTE_RULES') as $_k=>$_v){
+                  $_k =  str_replace(array('(:num)','(:any)'),array('(\d+)','(\w+)'),$_k);
+                  $_v =  str_replace(array('/'),array('\/'),$_v);
+
+                  preg_match_all('/\(.+?\)/',$_k,$res);
+                  preg_match_all('/\$\{\d{1}\}/',$_v,$res2);
+                  if($res && $res2){
+                      $_k = url_split_replace($_k);  //自定义url
+                      $_v = str_replace($res2[0],$res[0],$_v);  //系统url
+                      if(preg_match('/'.$_v.'$/',$url)){
+                          $url = preg_replace('/'.$_v.'$/',$_k,$url);
+                          break; //只匹配依次
+                      }
+                  }
+            }
+        }
+
+        //根据配置，返回是否带上后缀
+        return $self.'/'.$_m.$url.(C('URL_HTML_SUFFIX')?".".C('URL_HTML_SUFFIX'):'');
+
     }else{
         Aii::halt('错误的URL模式哦，请选择正确的');
     }
+}
+function url_split_replace($str){ //用于路由拆解组装
+    if(!$str){
+        return '';
+    }
+    $arr = preg_split('/\(.*?\)/',$str);
+    $result = '';
+    foreach($arr as $key=>$val){
+        if($key>0){
+            $result .= '${'.$key.'}';
+        }
+        $result .= $val;
+    }
+    return $result;
 }
 
 

@@ -57,6 +57,21 @@ return array(
 
     'LOAD_EXT_CONFIG'=>'ext',
 
+    //主题模板的规则的 模块名称大写+ _THEME配置，为空则不使用主题
+    'HOME_THEME' => 'newtheme',  //前台主题模板
+    'ADMIN_THEME' => '',   //后台主题模板
+
+    'URL_HTML_SUFFIX'       =>  'html',  //URL伪静态后缀设置，注意，这个添加后，必须要使用U函数生成。
+
+    // 开启路由，注意开启路由，可能略微损耗性能。
+    'URL_ROUTER_ON'   => true,
+    'URL_ROUTE_RULES'=>array(
+        'stu/(:num)_ab/(:num)-cd'	=> 'index/stu/id/${1}/type/${2}',
+        'hello'	=> 'index/test',
+        //'stu/(\d+)'	=> 'index/stu/id/${1}', //普通正则正则模式，注意要进行（）哦
+        'ci/(:any)'	=> 'city/${1}',
+    ),
+
 );
 
 
