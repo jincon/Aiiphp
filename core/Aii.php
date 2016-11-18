@@ -626,7 +626,7 @@ class Aii {
             $name = array_pop($t);
         }
         unset($t);
-        if(self::$_app[$name]) return self::$_app[$name];
+        if(isset(self::$_app[$name]) && self::$_app[$name]) return self::$_app[$name];
 
         //优先核心lib目录
         $r = self::require_cache(CORE_ROOT.'lib/'.$path.'.class.php');

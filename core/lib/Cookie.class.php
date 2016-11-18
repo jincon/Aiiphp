@@ -19,6 +19,7 @@ class Cookie {
         'expire'    => 3600,
         'path'      => '/',
         'domain'    => null,
+        'secretkey' => '',
     );
 
     /**
