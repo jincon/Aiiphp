@@ -1,0 +1,101 @@
+#!/usr/bin/env php
+<?php
+
+require("core/Aii.php");
+
+if(!IS_CLI) exit('请使用命令行');
+
+if ($argc != 3) {
+    die("Usage: Aii command content ");
+}
+
+$command = $argv[1];
+
+//模块可以支持：admin@houtai
+$content = $argv[2];
+
+if(strpos($command,":") != false){
+    $_t = explode(":",$command);
+    $command = $_t[0];
+    $type = $_t[1];
+}
+
+$module = 'home';
+if($command == 'make' && $type){
+    if(strpos($content,"@") != false){
+        $_t = explode("@",$content);
+        $module = $_t[0];
+        $content = $_t[1];
+    }
+    switch($type){
+        case 'controller':
+            $dir = 'app/'.($module?$module."/":'').'controller/';
+            $file = ucfirst($content).'Controller.class.php';
+            $fileContent = '
+<?php
+
+class '.ucfirst($content).'Controller extends Controller{
+
+    public function index(){
+
+    }
+
+}
+';
+            break;
+        case 'model':
+            $dir = 'app/'.($module?$module."/":'').'model/';
+            $file = ucfirst($content).'Model.class.php';
+            $fileContent = '
+<?php
+
+class '.ucfirst($content).'Model extends Model{
+    public $table = "'.$content.'";
+
+
+}
+            ';
+            break;
+        case 'module':
+            $dir[] = 'app/'.($content?$content."/":'').'controller/';
+            $dir[] = 'app/'.($content?$content."/":'').'model/';
+            $dir[] = 'app/'.($content?$content."/":'').'view/';
+
+            break;
+    }
+    if($dir || $file){
+        if(is_array($dir)){
+            foreach($dir as $v){
+                if(!is_dir($v)){
+                    $r = mkdir($v,0777,true);
+                    if(!$r){
+                        exit("创建目录".$v."失败，可能该目录不可写，没有权限\n");
+                    }else{
+                        echo "创建目录：".$v." 完成\n";
+                    }
+                }
+            }
+        }elseif($dir){
+            if(is_dir($v)){
+                $r = mkdir($dir,0777,true);
+                if(!$r) exit("创建目录".$dir."失败，可能该目录不可写，没有权限");
+            }
+        }
+        if($file && !is_array($dir) && $dir){
+
+            if(!file_exists($dir.$file)){
+                $f = fopen($dir.$file, "w") or exit("创建文件失败!");
+                if($fileContent){
+                    fwrite($f,$fileContent);
+                }
+                fclose($f);
+                exit("创建文件：".$dir.$file."完成\n");
+            }else{
+                exit("文件：".$dir.$file."已存在！\n");
+            }
+        }
+    }
+}
+
+
+?>

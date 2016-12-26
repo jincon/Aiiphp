@@ -63,7 +63,7 @@
  *
  */
 
-define('VERSION','0.9.2');
+define('VERSION','1.0.1');
 
 // 记录开始运行时间
 $GLOBALS['_beginTime'] = microtime(TRUE);

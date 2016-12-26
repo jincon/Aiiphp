@@ -23,7 +23,7 @@
 <body>
 <div class="error">
     <p class="face">异常错误：</p>
-    <h3><?php echo strip_tags($e['message']);?></h3>
+    <h3><?php echo strip_tags($e['message']);?> &nbsp;&nbsp;&nbsp;<a href="<?php echo HOST;?>">返回首页</a></h3>
     <div class="content">
         <?php if(isset($e['file'])) {?>
             <div class="info">

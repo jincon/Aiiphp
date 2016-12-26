@@ -48,6 +48,8 @@ class IndexController extends JomController{
 
     function test(){
 
+
+
         //$this->success("哈哈","http://baidu.com",100);
         //$this->error("哈哈","http://baidu.com",1000000);
 
