@@ -274,7 +274,7 @@ class Aii {
 
         if($uri){
             //如果开启了伪静态的后缀。
-            $uri = self::$_config['URL_HTML_SUFFIX'] ? rtrim($uri,'.'.self::$_config['URL_HTML_SUFFIX']):$uri;
+            $uri = self::$_config['URL_HTML_SUFFIX'] ? str_replace('.'.self::$_config['URL_HTML_SUFFIX'],"",$uri):$uri;
 
             //解析可能的自定义路由
             if(self::$_config['URL_ROUTER_ON'] && self::$_config['URL_ROUTE_RULES']){
