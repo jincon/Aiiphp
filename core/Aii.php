@@ -266,7 +266,9 @@ class Aii {
             [SCRIPT_NAME] => /demo/Aiiphp/index.php
             [PATH_INFO] => /home/index/test/a/1/b/
          * */
-        if(in_array(self::$url_mode,array(1,2))){
+        if(IS_CLI){ //兼容cli模式
+            $uri = isset($_SERVER['argv'][1])?trim($_SERVER['argv'][1],'/'):'';
+        }elseif(in_array(self::$url_mode,array(1,2))){
             $uri = isset($_SERVER['PATH_INFO'])?trim($_SERVER['PATH_INFO'],'/'):'';
         }else{
             Aii::halt('错误的URL模式哦，请选择正确的');
