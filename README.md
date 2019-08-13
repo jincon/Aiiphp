@@ -74,10 +74,15 @@ Web ：http://www.jincon.com/
 等我有空搞。。。。或者谁给我一张图！
 
 #更新日志：
+
+8.13
+<pre>
+让AI框架支持CLI命令模式，  eg：php index.php cron/index
+</pre>
+
 12.24
 <pre>
 1、添加命令行Aii工具，先搞个简单版本吧，算是为了占位。
-
 </pre>
 
 11.18
