@@ -349,8 +349,8 @@ class Model{
      * @param $where
      * @param $array
      */
-    function update($data ,$where, $array){
-        if(empty($data) || empty($where) || empty($array) || !$this->table){
+    function update($data ,$where, $array=array()){
+        if(empty($data) || empty($where) || !$this->table){
             return false;
         }
         $this->_master()->update($this->table,$data,$where,$array);
