@@ -270,6 +270,14 @@ class Aii {
             $uri = isset($_SERVER['argv'][1])?trim($_SERVER['argv'][1],'/'):'';
         }elseif(in_array(self::$url_mode,array(1,2))){
             $uri = isset($_SERVER['PATH_INFO'])?trim($_SERVER['PATH_INFO'],'/'):'';
+            
+            //有的pathinfo不支持，或者搞麻烦，可以加上这个tp模式进行支持。
+            /*if(isset($_GET['s']) && $_GET['s']){ //兼容 tp的 s=xxx 模式。开的发时候要避免 s 的参数。
+                $uri = trim($_GET['s'],'/');
+            }else{
+                $uri = isset($_SERVER['PATH_INFO'])?trim($_SERVER['PATH_INFO'],'/'):'';
+            }*/
+            
         }else{
             Aii::halt('错误的URL模式哦，请选择正确的');
         }
